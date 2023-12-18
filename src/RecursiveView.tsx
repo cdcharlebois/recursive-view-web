@@ -36,7 +36,7 @@ export function RecursiveView(props: RecursiveViewContainerProps): ReactElement 
                 setTree(prev => [...prev, { mxid: item.id, level: 0 } as ILevel]);
             }
         });
-    }, [nodes]);
+    }, [nodes.items]);
     // Why render a list when we already have the tree strcuture
     const renderChildren = (node: ILevel): ReactElement => {
         const self = nodes.items?.find(i => i.id === node.mxid);
