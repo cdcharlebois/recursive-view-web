@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="mendix.recursiveview.RecursiveView" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>Recursive View</name>
+    <description>A recursive view for rendering self-relations</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="nodes" type="datasource" required="true" isList="true">
+              <caption>Nodes</caption>
+              <description>This datasource should return the children of all open nodes</description>
+            </property>
+            <property key="parents" type="datasource" required="true" isList="true">
+              <caption>Parents</caption>
+              <description>This datasource should return the possible parents</description>
+            </property>
+            <property key="content" type="widgets" required="false" dataSource="nodes">
+              <caption>Content</caption>
+              <description></description>
+            </property>
+            <property key="association" type="association" required="true" dataSource="nodes" selectableObjects="parents">
+              <caption>Parent</caption>
+              <description></description>
+              <associationTypes>
+                <associationType name="Reference" />
+              </associationTypes>
+            </property>
+            <property key="attribute" type="attribute" required="true" dataSource="nodes">
+              <caption>Sorting</caption>
+              <description></description>
+              <attributeTypes>
+                <attributeType name="String" />
+              </attributeTypes>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>
