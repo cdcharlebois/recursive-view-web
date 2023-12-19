@@ -34,6 +34,10 @@
                 <attributeType name="String" />
               </attributeTypes>
             </property>
+            <property key="loadingContent" type="widgets">
+              <caption>Loading Content</caption>
+              <description></description>
+            </property>
         </propertyGroup>
     </properties>
 </widget>

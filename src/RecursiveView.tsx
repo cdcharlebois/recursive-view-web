@@ -1,5 +1,5 @@
+import { ValueStatus } from "mendix";
 import { ReactElement, createElement, useEffect, useState } from "react";
-
 import { RecursiveViewContainerProps } from "typings/RecursiveViewProps";
 import "./ui/RecursiveView.css";
 
@@ -11,13 +11,15 @@ export interface ILevel {
 
 export function RecursiveView(props: RecursiveViewContainerProps): ReactElement {
     const [tree, setTree] = useState<ILevel[]>([]);
+    const [loading, setLoading] = useState(true); // when loading, don't render any children
     console.log("tree>>>", { tree });
     const { nodes, association } = props;
 
     useEffect(() => {
+        setLoading(true);
         nodes.items?.forEach(item => {
             const parentId = association.get(item).value?.id;
-            console.log({ parentId });
+            // console.log({ parentId });
             const existingParent = tree.find(i => i.mxid === parentId);
             const existingItem = tree.find(i => i.mxid === item.id);
             if (existingParent) {
@@ -36,7 +38,16 @@ export function RecursiveView(props: RecursiveViewContainerProps): ReactElement 
                 setTree(prev => [...prev, { mxid: item.id, level: 0 } as ILevel]);
             }
         });
+        setTree(prev => prev.filter(li => nodes.items?.find(ni => ni.id === li.mxid)));
+        setLoading(false);
     }, [nodes.items]);
+    useEffect(() => {
+        if (nodes.status === ValueStatus.Available) {
+            setLoading(false);
+        } else {
+            setLoading(true);
+        }
+    }, [nodes, nodes.status]);
     // Why render a list when we already have the tree strcuture
     const renderChildren = (node: ILevel): ReactElement => {
         const self = nodes.items?.find(i => i.id === node.mxid);
@@ -46,12 +57,25 @@ export function RecursiveView(props: RecursiveViewContainerProps): ReactElement 
                 {self && props.content && (
                     <div>
                         <div>{props.content?.get(self) as ReactElement}</div>
-                        <div style={{ paddingLeft: 10 }}>{children && children.map(c => renderChildren(c))}</div>
+                        <div style={{ paddingLeft: 10 }}>
+                            {!loading || children.length > 0
+                                ? children.map(c => renderChildren(c))
+                                : props.loadingContent}
+                        </div>
                     </div>
                 )}
             </div>
         );
     };
     const root = tree.find(i => !i.parentId);
-    return <div>{root && renderChildren(root)}</div>;
+    return (
+        <div>
+            <pre>
+                Loading: {loading ? "true" : "false"} <br />
+                Tree: {tree.map(ti => ti.mxid).join(", ")} <br />
+                nodes.items.length: {nodes.items?.length}
+            </pre>
+            {root && renderChildren(root)}
+        </div>
+    );
 }
