@@ -17,6 +17,7 @@ export interface RecursiveViewContainerProps {
     association: ListReferenceValue;
     attribute: ListAttributeValue<string>;
     loadingContent: ReactNode;
+    devMode: boolean;
 }
 
 export interface RecursiveViewPreviewProps {
@@ -34,4 +35,5 @@ export interface RecursiveViewPreviewProps {
     association: string;
     attribute: string;
     loadingContent: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
+    devMode: boolean;
 }

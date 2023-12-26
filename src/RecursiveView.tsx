@@ -13,7 +13,7 @@ export function RecursiveView(props: RecursiveViewContainerProps): ReactElement 
     const [tree, setTree] = useState<ILevel[]>([]);
     const [loading, setLoading] = useState(true); // when loading, don't render any children
     const [clickedNode, setClickedNode] = useState("");
-    console.log("tree>>>", { tree });
+    // console.log("tree>>>", { tree });
     const { nodes, association } = props;
 
     useEffect(() => {
@@ -85,12 +85,15 @@ export function RecursiveView(props: RecursiveViewContainerProps): ReactElement 
     const root = tree.find(i => !i.parentId);
     return (
         <div>
-            <pre>
-                Loading: {loading ? "true" : "false"} <br />
-                Tree: {tree.map(ti => ti.mxid).join(", ")} <br />
-                nodes.items.length: {nodes.items?.length} <br />
-                Clicked Node: {clickedNode}
-            </pre>
+            {props.devMode && (
+                <pre>
+                    Loading: {loading ? "true" : "false"} <br />
+                    Tree: {tree.map(ti => ti.mxid).join(", ")} <br />
+                    nodes.items.length: {nodes.items?.length} <br />
+                    Clicked Node: {clickedNode}
+                </pre>
+            )}
+
             {root && renderChildren(root)}
         </div>
     );

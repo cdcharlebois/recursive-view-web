@@ -39,5 +39,11 @@
               <description></description>
             </property>
         </propertyGroup>
+        <propertyGroup caption="Developer">
+          <property key="devMode" type="boolean" defaultValue="false">
+            <caption>Debug Mode</caption>
+            <description>Shows the debug data (useful for troubleshooting)</description>
+          </property>
+        </propertyGroup>
     </properties>
 </widget>
